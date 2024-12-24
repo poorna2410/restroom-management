@@ -1,0 +1,159 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Restroom Management System</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f0f8ff;
+            font-family: 'Arial', sans-serif;
+        }
+        .header {
+            text-align: center;
+            padding: 60px 0;
+            font-size: 40px;
+            font-weight: bold;
+            color: white;
+            background-color: #6f42c1;
+        }
+        .mall-images {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .mall-images img {
+            width: 300px;
+            height: 200px;
+            border-radius: 8px;
+            object-fit: cover;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .alert-messages {
+            font-size: 18px;
+            color: #dc3545; /* Red color for alerts */
+            text-align: center;
+            {% comment %} max-width: 500px; /* Width of the alert box */
+            margin: 0 auto 20px 20px; /* Center-left alignment */ {% endcomment %}
+        }
+        .quotes {
+            {% comment %} margin-top: 30px;
+            max-width: 600px; /* Limit the width for readability */ {% endcomment %}
+            {% comment %} margin: 0 auto; /* Center the text */ {% endcomment %}
+            text-align: center;
+            font-size: 22px;
+            color: #5a6268;
+            font-style: italic;
+            line-height: 1.5;
+            font-weight: 600;
+        }
+        
+        .quotes p {
+            margin: 10px 0;
+        }
+        
+        .table-container {
+            max-width: 90%;
+            margin: 20px auto;
+        }
+        .table {
+            border: 1px solid #dee2e6;
+        }
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .thank-you {
+            text-align: center;
+            font-size: 24px;
+            margin-top: 40px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><b>Welcome to the Restroom Management System</b></h1>
+    </div>
+
+    <!-- Static Mall Images Section -->
+    <div class="mall-images">
+        <img src="{% static 'images/mall1.jpeg' %}" alt="Mall Image 1">
+        <img src="{% static 'images/mall2.jpeg' %}" alt="Mall Image 2">
+        <img src="{% static 'images/mall3.jpeg' %}" alt="Mall Image 3">
+        <img src="{% static 'images/mall4.jpeg' %}" alt="Mall Image 4">
+        <img src="{% static 'images/mall5.jpeg' %}" alt="Mall Image 5">
+    </div>
+
+    <!-- Cleanliness Quotes Section -->
+    <div class="quotes">
+    <p>"Cleanliness and order are not matters of instinct; they are matters of education, and like most great things, you must cultivate a taste for them."</p>
+    <p>"A clean environment is a human right like any other. "</p>
+    <p>"Embrace cleanliness, for it reflects your respect for yourself and the world around you."</p>
+</div>
+    <!-- Alert Messages for Restrooms Needing Immediate Attention -->
+    {% if alerts %}
+    <div class="alert-messages">
+        <h4><b>Attention Needed:</b></h4>
+        <ul>
+            {% for alert in alerts %}
+                <li>{{ alert }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <!-- Restroom Data in Table Format -->
+    <div class="table-container">
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Restroom</th>
+                    <th>Date</th>
+                    <th>Entries</th>
+                    <th>Exits</th>
+                    <th>Temperature</th>
+                    <th>Humidity</th>
+                    <th>Odour Level</th>
+                    <th>Toiletries Stock</th>
+                    <th>Status</th>
+                    <th>Last Cleaned Date</th>
+                    <th>Next Cleaning Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for status in statuses %}
+                <tr class="{% if status.is_clean %}table-success{% else %}table-danger{% endif %}">
+                    <td>{{ status.restroom.name }}</td>
+                    <td>{{ status.date }}</td>
+                    <td>{{ status.entries }}</td>
+                    <td>{{ status.exits }}</td>
+                    <td>{{ status.temperature }}°C</td>
+                    <td>{{ status.humidity }}%</td>
+                    <td>{{ status.odour_level }}</td>
+                    <td>{% if status.toiletries_stock %}Yes{% else %}No{% endif %}</td>
+                    <td>{% if status.is_clean %}Clean{% else %}Dirty{% endif %}</td>
+                    <td>{{ status.cleaned_date }}</td>
+                    <td>{{ status.next_cleaning_date }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="thank-you">
+        Thank you for visiting our system!
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
